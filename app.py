@@ -27,6 +27,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        # if event.type== pygame.MOUSEMOTION:
+        #     print(event.pos)
 
     # blit: block image transfer, aka putting one surface on another surface.
     screen.blit(sky_surface, (0, 0))
