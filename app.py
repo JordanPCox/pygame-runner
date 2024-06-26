@@ -38,6 +38,13 @@ while True:
     screen.blit(snail_surf,snail_rect)
     screen.blit(player_surf,player_rect)
 
+    # if player_rect.colliderect(snail_rect):
+    #     print('collision')
+
+    mouse_pos = pygame.mouse.get_pos()
+    if player_rect.collidepoint((mouse_pos)):
+        print(pygame.mouse.get_pressed())
+
     pygame.display.update()
     clock.tick(60)
     # this is telling the while loop not to run more than 60 times per second
