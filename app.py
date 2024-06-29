@@ -31,6 +31,12 @@ while True:
             exit()
         # if event.type== pygame.MOUSEMOTION:
         #     print(event.pos)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                print('jump')
+            print('key down')
+        if event.type == pygame.KEYUP:
+            print('key up')
 
     # blit: block image transfer, aka putting one surface on another surface.
     screen.blit(sky_surface, (0,0))
@@ -38,14 +44,16 @@ while True:
     pygame.draw.rect(screen,'#c0e8ec',score_rect)
     # tells pygame we're going to draw something, then the type of shape, then put in 3 arguments: surface to draw on, color, and the rectangle we want to draw. You can add in a 4th and 5th argument for width and border radius.
     pygame.draw.rect(screen,'#c0e8ec',score_rect,10)
-    pygame.draw.ellipse(screen,'Brown',pygame.Rect(50,200,100,100))
-    # Creating a rectangle within the method that takes 4 arguments: left, top, width, height
     screen.blit(score_surf, (score_rect))
 
     snail_rect.x -= 4
     if snail_rect.right <= 0: snail_rect.left = 800
     screen.blit(snail_surf,snail_rect)
     screen.blit(player_surf,player_rect)
+
+    # keys = pygame.key.get_pressed()
+    # if keys[pygame.K_SPACE]:
+    #     print('jump')
 
     # if player_rect.colliderect(snail_rect):
     #     print('collision')
