@@ -2,8 +2,8 @@ import pygame
 from sys import exit
 
 def display_score():
-    current_time = pygame.time.get_ticks() - start_time # Gives time in milliseconds
-    score_surf = test_font.render(f'{current_time}',False,(64,64,64)) # It expects a string, so we change current_time to an integer with f'{}'
+    current_time = int(pygame.time.get_ticks() / 1000) - start_time # Gives time in milliseconds, divides by 1,000 to get time in seconds, displays as an integer, and subtracts start time
+    score_surf = test_font.render(f'Score: {current_time}',False,(64,64,64)) # It expects a string, so we change current_time to an integer with f'{}'
     score_rect = score_surf.get_rect(center = (400,50))
     screen.blit(score_surf,score_rect)
 
@@ -45,7 +45,7 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
                 snail_rect.left = 800
-                start_time = pygame.time.get_ticks()
+                start_time = int(pygame.time.get_ticks() / 1000)
 
     if game_active:
         screen.blit(sky_surface, (0,0)) # blit: block image transfer, aka putting one surface on another surface.
