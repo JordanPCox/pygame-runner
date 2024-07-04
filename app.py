@@ -6,6 +6,7 @@ screen = pygame.display.set_mode((800,400))
 pygame.display.set_caption('Runner')
 clock = pygame.time.Clock()
 test_font = pygame.font.Font('fonts/Pixeltype.ttf', 50)
+game_active = True
 # 2 arguments are font type, and font size
 
 sky_surface = pygame.image.load('graphics/sky.png').convert()
@@ -40,28 +41,29 @@ while True:
                 player_gravity = -20
 
     # blit: block image transfer, aka putting one surface on another surface.
-    screen.blit(sky_surface, (0,0))
-    screen.blit(ground_surface, (0,300))
-    pygame.draw.rect(screen,'#c0e8ec',score_rect)
-    # tells pygame we're going to draw something, then the type of shape, then put in 3 arguments: surface to draw on, color, and the rectangle we want to draw. You can add in a 4th and 5th argument for width and border radius.
-    pygame.draw.rect(screen,'#c0e8ec',score_rect,10)
-    screen.blit(score_surf, (score_rect))
+    if game_active:
+        screen.blit(sky_surface, (0,0))
+        screen.blit(ground_surface, (0,300))
+        pygame.draw.rect(screen,'#c0e8ec',score_rect)
+        # tells pygame we're going to draw something, then the type of shape, then put in 3 arguments: surface to draw on, color, and the rectangle we want to draw. You can add in a 4th and 5th argument for width and border radius.
+        pygame.draw.rect(screen,'#c0e8ec',score_rect,10)
+        screen.blit(score_surf, (score_rect))
 
-    snail_rect.x -= 4
-    if snail_rect.right <= 0: snail_rect.left = 800
-    screen.blit(snail_surf,snail_rect)
+        snail_rect.x -= 4
+        if snail_rect.right <= 0: snail_rect.left = 800
+        screen.blit(snail_surf,snail_rect)
 
-    # Player
-    player_gravity += 1
-    player_rect.y += player_gravity
-    if player_rect.bottom >= 300: player_rect.bottom = 300
-    screen.blit(player_surf,player_rect)
+        # Player
+        player_gravity += 1
+        player_rect.y += player_gravity
+        if player_rect.bottom >= 300: player_rect.bottom = 300
+        screen.blit(player_surf,player_rect)
 
-    # Collision
-    if snail_rect.colliderect(player_rect):
-        pygame.quit()
-        exit()
-
+        # Collision
+        if snail_rect.colliderect(player_rect):
+            game_active = False
+    else:
+        screen.fill('Yellow')
     pygame.display.update()
     clock.tick(60)
     # this is telling the while loop not to run more than 60 times per second
