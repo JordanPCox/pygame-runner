@@ -57,6 +57,11 @@ while True:
     if player_rect.bottom >= 300: player_rect.bottom = 300
     screen.blit(player_surf,player_rect)
 
+    # Collision
+    if snail_rect.colliderect(player_rect):
+        pygame.quit()
+        exit()
+
     pygame.display.update()
     clock.tick(60)
     # this is telling the while loop not to run more than 60 times per second
