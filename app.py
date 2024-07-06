@@ -15,6 +15,18 @@ def collisions(player,obstacles):
             if player.colliderect(obstacle_rect): return False
     return True
 
+def player_animation():
+    # play walking animation if player is on floor
+    # play jump animation if player is jumping
+    global player_surf, player_index
+    
+    if player_rect.bottom < 300: # play the jump animation if the player's position is above 300, which is the height of the ground
+        player_surf = player_jump
+    else: 
+        player_index += 0.1 # slows down the animation so it looks more natural and isn't switching every frame
+        if player_index >= len(player_walk): player_index = 0 # resets the index after it reaches the end of the list, which is only 2
+        player_surf = player_walk[int(player_index)]
+
 def obstacle_movement(obstacle_list):
     if obstacle_list:
         for obstacle_rect in obstacle_list:
@@ -49,7 +61,14 @@ fly_surf = pygame.image.load('graphics/fly/Fly1.png').convert_alpha()
 
 obstacle_rect_list = []
 
-player_surf = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
+player_walk_1 = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
+player_walk_2 = pygame.image.load('graphics/Player/player_walk_2.png').convert_alpha()
+player_walk = [player_walk_1,player_walk_2]
+player_index = 0
+player_jump = pygame.image.load('graphics/Player/jump.png').convert_alpha()
+
+player_surf = player_walk[player_index] # taking our 2 walk animations and using the index to pick one
+
 player_rect = player_surf.get_rect(midbottom = (80,300)) # the .get_rect method draws a rectangle around the surface
 player_gravity = 0
 
@@ -109,6 +128,7 @@ while True:
         player_gravity += 1
         player_rect.y += player_gravity
         if player_rect.bottom >= 300: player_rect.bottom = 300
+        player_animation()
         screen.blit(player_surf,player_rect)
 
         # Obstacle movement
@@ -120,6 +140,8 @@ while True:
         screen.fill((94,129,162))
         screen.blit(player_stand,player_stand_rect)
         obstacle_rect_list.clear() # clears the enemies after a collision for a proper restart
+        player_rect.midbottom = (80,300) # resets player's position following a restart
+        player_gravity = 0
 
         score_message = test_font.render(f'Your score: {score}',False,(111,196,169))
         score_message_rect = score_message.get_rect(center = (400,330))
