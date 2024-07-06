@@ -6,6 +6,7 @@ def display_score():
     score_surf = test_font.render(f'Score: {current_time}',False,(64,64,64)) # It expects a string, so we change current_time to an integer with f'{}'
     score_rect = score_surf.get_rect(center = (400,50))
     screen.blit(score_surf,score_rect)
+    return current_time
 
 pygame.init()
 screen = pygame.display.set_mode((800,400))
@@ -14,6 +15,7 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font('fonts/Pixeltype.ttf', 50) # 2 arguments are font type, and font size
 game_active = False
 start_time = 0
+score = 0
 
 sky_surface = pygame.image.load('graphics/sky.png').convert() # .convert converts the image into something pygame can use more efficiently.
 ground_surface = pygame.image.load('graphics/ground.png').convert()
@@ -64,7 +66,7 @@ while True:
         # pygame.draw.rect(screen,'#c0e8ec',score_rect) # tells pygame we're going to draw something, then the type of shape, then put in 3 arguments: surface to draw on, color, and the rectangle we want to draw. You can add in a 4th and 5th argument for width and border radius.
         # pygame.draw.rect(screen,'#c0e8ec',score_rect,10)
         # screen.blit(score_surf, (score_rect))
-        display_score()
+        score = display_score()
 
         snail_rect.x -= 4
         if snail_rect.right <= 0: snail_rect.left = 800
@@ -82,8 +84,15 @@ while True:
     else:
         screen.fill((94,129,162))
         screen.blit(player_stand,player_stand_rect)
+
+        score_message = test_font.render(f'Your score: {score}',False,(111,196,169))
+        score_message_rect = score_message.get_rect(center = (400,330))
         screen.blit(game_name,game_name_rect)
-        screen.blit(game_message,game_message_rect)
+
+        if score == 0:
+            screen.blit(game_message,game_message_rect)
+        else:
+            screen.blit(score_message,score_message_rect)
 
 
     pygame.display.update()
