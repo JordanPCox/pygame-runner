@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0
 
         self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
-        self.jump_sound.set_volume(0.2) # 1 is full volume, 0 is muted
+        self.jump_sound.set_volume(0.5) # 1 is full volume, 0 is muted
 
     def player_input(self):
         keys = pygame.key.get_pressed()
