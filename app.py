@@ -55,9 +55,19 @@ ground_surface = pygame.image.load('graphics/ground.png').convert()
 # score_rect = score_surf.get_rect(center = (400,50))
 
 
-# Obstacles
-snail_surf = pygame.image.load('graphics/snail/snail1.png').convert_alpha() # adding _alpha after .convert to make the alpha (black/white) values transparent
-fly_surf = pygame.image.load('graphics/fly/Fly1.png').convert_alpha()
+# Snail
+snail_frame_1 = pygame.image.load('graphics/snail/snail1.png').convert_alpha() # adding _alpha after .convert to make the alpha (black/white) values transparent
+snail_frame_2 = pygame.image.load('graphics/snail/snail2.png').convert_alpha()
+snail_frames = [snail_frame_1,snail_frame_2]
+snail_frame_index = 0
+snail_surf = snail_frames[snail_frame_index]
+
+# Fly
+fly_frame_1 = pygame.image.load('graphics/fly/Fly1.png').convert_alpha()
+fly_frame_2 = pygame.image.load('graphics/fly/Fly2.png').convert_alpha()
+fly_frames = [fly_frame_1,fly_frame_2]
+fly_frame_index = 0
+fly_surf = fly_frames[fly_frame_index]
 
 obstacle_rect_list = []
 
@@ -87,6 +97,12 @@ game_message_rect = game_message.get_rect(center = (400,340))
 obstacle_timer = pygame.USEREVENT + 1 # Have to add + 1 to the event because USEREVENT has reserved events in pygame
 pygame.time.set_timer(obstacle_timer,1500) # 2 arguments: event to trigger, and how often to trigger it (in milliseconds)
 
+snail_animation_timer = pygame.USEREVENT + 2
+pygame.time.set_timer(snail_animation_timer,500)
+
+fly_animation_timer = pygame.USEREVENT + 3
+pygame.time.set_timer(fly_animation_timer,200)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -106,11 +122,22 @@ while True:
                 game_active = True
                 start_time = int(pygame.time.get_ticks() / 1000)
 
-        if event.type == obstacle_timer and game_active:
-            if randint(0,2): # will give a value of 0 or 1. 0 will be false, 1 will be true.
-                obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900,1100),300)))
-            else:
-                obstacle_rect_list.append(fly_surf.get_rect(bottomright = (randint(900,1100),210)))
+        if game_active:
+            if event.type == obstacle_timer:
+                if randint(0,2): # will give a value of 0 or 1. 0 will be false, 1 will be true.
+                    obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900,1100),300)))
+                else:
+                    obstacle_rect_list.append(fly_surf.get_rect(bottomright = (randint(900,1100),210)))
+
+            if event.type == snail_animation_timer:
+                if snail_frame_index == 0: snail_frame_index = 1
+                else: snail_frame_index = 0
+                snail_surf = snail_frames[snail_frame_index]
+
+            if event.type == fly_animation_timer:
+                if fly_frame_index == 0: fly_frame_index = 1
+                else: fly_frame_index = 0
+                fly_surf = fly_frames[fly_frame_index]
 
     if game_active:
         screen.blit(sky_surface, (0,0)) # blit: block image transfer, aka putting one surface on another surface.
