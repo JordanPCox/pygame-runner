@@ -40,6 +40,10 @@ game_name_rect = game_name.get_rect(center = (400,80))
 game_message = test_font.render('Press space to run',False,(111,196,169))
 game_message_rect = game_message.get_rect(center = (400,340))
 
+# Timer
+obstacle_timer = pygame.USEREVENT + 1 # Have to add + 1 to the event because USEREVENT has reserved events in pygame
+pygame.time.set_timer(obstacle_timer,900) # 2 arguments: event to trigger, and how often to trigger it (in milliseconds)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,6 +63,9 @@ while True:
                 game_active = True
                 snail_rect.left = 800
                 start_time = int(pygame.time.get_ticks() / 1000)
+
+        if event.type == obstacle_timer:
+            print('test')
 
     if game_active:
         screen.blit(sky_surface, (0,0)) # blit: block image transfer, aka putting one surface on another surface.
@@ -89,10 +96,8 @@ while True:
         score_message_rect = score_message.get_rect(center = (400,330))
         screen.blit(game_name,game_name_rect)
 
-        if score == 0:
-            screen.blit(game_message,game_message_rect)
-        else:
-            screen.blit(score_message,score_message_rect)
+        if score == 0: screen.blit(game_message,game_message_rect)            
+        else: screen.blit(score_message,score_message_rect)            
 
 
     pygame.display.update()
